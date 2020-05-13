@@ -1,9 +1,10 @@
 library(raster)
 library(rgdal)
 library(randomForest)
-library(caret)
+library(rfUtilities)
+library(ggplot2)
 library(reprtree)
-#library(doParallel)
+
 # set working directory
 setwd("~/Documents/RS/rcode")
 
@@ -31,7 +32,7 @@ rf_tune100 <- tuneRF(x=val_df[,1:7], y=val_df[,8], ntreeTry=100, stepFactor=500)
 rf_tune300 <- tuneRF(x=val_df[,1:7], y=val_df[,8], ntreeTry=300, stepFactor=500)
 rf_tune500 <- tuneRF(x=val_df[,1:7], y=val_df[,8], ntreeTry=500, stepFactor=500)
 
-total_tune <- rbind(rf_tune50, rf_tune100, rf_tune300 rf_tune500)
+total_tune <- rbind(rf_tune50, rf_tune100, rf_tune300, rf_tune500)
 m <- matrix(total_tune[,2], nrow = 3, ncol = 4, dimnames = list(c("1","2","7"), c("50","100","300","500")) )
 
 matplot(rownames(m), m, type='l', xlab='mtry', ylab='OOB Error', lty=1, col=2:5)
