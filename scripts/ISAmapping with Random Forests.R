@@ -8,7 +8,7 @@ library(reprtree)
 # set working directory
 setwd("~/Documents/RS/rcode")
 
-###################prepare data##################
+################### prepare data ##################
 #load Landsat composite
 L815 <- brick("sat15_com.tif")
 
@@ -26,7 +26,7 @@ val_df <- na.omit(data.frame(val))
 names(val_df) <- c('b1','b2','b3','b4','b5','b6','b7','lc')
 val_df$lc <- as.factor(val_df$lc)
 
-#####################tune parameters##################
+##################### tune parameters ##################
 rf_tune50 <- tuneRF(x=val_df[,1:7], y=val_df[,8], ntreeTry=50, stepFactor=500)
 rf_tune100 <- tuneRF(x=val_df[,1:7], y=val_df[,8], ntreeTry=100, stepFactor=500)
 rf_tune300 <- tuneRF(x=val_df[,1:7], y=val_df[,8], ntreeTry=300, stepFactor=500)
@@ -39,7 +39,7 @@ matplot(rownames(m), m, type='l', xlab='mtry', ylab='OOB Error', lty=1, col=2:5)
 legend( 'topright', inset=.05, legend=colnames(m), title = 'ntree',
        pch=1, horiz=TRUE, col=2:5)
 
-################## #test multicollinearity ###########
+################### test multicollinearity ###########
 mc <- multi.collinear(val_df[,1:7])
 mc
 ################### train model ###################
@@ -51,14 +51,14 @@ rf <- randomForest(lc ~ .,
                    na.action=na.roughfix)
                    
 ############## evaluate the model ############
-print(rf)mo
+print(rf)
 attributes(rf)
 plot(rf)
 
 #variable importance
 varImpPlot(rf)
 importance(rf)
-# Look at the firsr trees in the forest.
+#Look at the first trees in the forest.
 tree <- getTree(rf, k=1, labelVar=TRUE)
 reprtree:::plot.getTree(rf)
 
